@@ -15,4 +15,5 @@ object Constants {
     const val BASE_URL = "https://api.openweathermap.org"
     const val API_KEY = "df5a531d28bba9be4d5fa702cf3261a2"
     const val FILE_PROVIDER = "com.robusta.photoweather.fileprovider"
+    const val DATABASE_NAME = "photo_weather.db"
 }

@@ -12,7 +12,6 @@ import com.robusta.base.fragments.BaseFragment
 import com.robusta.photoweather.R
 import com.robusta.photoweather.databinding.FragmentHomeBinding
 import com.robusta.photoweather.ui.dialogs.PickImageDialogFragment
-import com.robusta.photoweather.utilities.Constants.ADD_WEATHER_ROUTE
 import com.robusta.photoweather.utilities.Constants.FILE_PROVIDER
 import com.robusta.photoweather.utilities.Constants.HOME_FRAG
 import timber.log.Timber
