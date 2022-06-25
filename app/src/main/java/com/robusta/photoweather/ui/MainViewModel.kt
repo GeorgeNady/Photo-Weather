@@ -59,16 +59,16 @@ class MainViewModel @Inject constructor(
     }
 
     /////////////////////////////////////////////////////////////////////////////////////// DATABASE
-    fun getAllHistory() {
+    /*fun getAllHistory() {
         _historyPhoto.value = Resource.loading()
         try {
             _historyPhoto.value = Resource.success(mainRepo.getPhotosWeather())
         } catch (e: Exception) {
             _historyPhoto.value = Resource.failed(e.message.toString())
         }
-    }
+    }*/
 
-    fun createPhotoHistory(photoWeather: PhotoWeather) = viewModelScope.launch {
+    /*fun createPhotoHistory(photoWeather: PhotoWeather) = viewModelScope.launch {
         _createHistoryPhoto.value = Resource.loading()
         try {
             val isCreated = mainRepo.insertPhotoWeather(photoWeather)
@@ -81,7 +81,7 @@ class MainViewModel @Inject constructor(
         } catch (e: Exception) {
             _createHistoryPhoto.value = Resource.failed(e.message.toString())
         }
-    }
+    }*/
 
     /////////////////////////////////////////////////////////////////////////////// HELPER FUNCTIONS
     fun takeViewSnapshot(view: View): Bitmap {

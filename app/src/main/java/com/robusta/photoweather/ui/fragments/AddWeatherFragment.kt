@@ -146,7 +146,7 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
                 image = imageByteArray,
                 thumbnail = thumbnailByteArray,
             )
-            createPhotoHistory(photoWeather)
+            // createPhotoHistory(photoWeather)
         }
 
     }

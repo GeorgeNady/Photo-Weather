@@ -22,12 +22,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += [
-                        "dagger.hilt.disableModulesHaveInstallInCheck": "true",
-                        "room.schemaLocation"                         : "$projectDir/schemas".toString(),
-                        "room.incremental"                            : "true",
-                        "room.expandProjection"                       : "true"
-                ]
+                arguments += ["dagger.hilt.disableModulesHaveInstallInCheck": "true"]
             }
         }
     }
@@ -38,8 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-
-            multiDexEnabled true
+            debuggable true
         }
     }
     compileOptions {
@@ -64,7 +58,6 @@ dependencies {
 
     // ////////////////////////////////////////////////////////////////////////////// implementation
     implementation(
-            'androidx.core:core-ktx:1.7.0',
             "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
             "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     )
@@ -104,7 +97,6 @@ dependencies {
     // Room
     implementation(
             "androidx.room:room-runtime:$room_version",
-            "androidx.room:room-compiler:$room_version",
             "androidx.room:room-ktx:$room_version",
             // "androidx.room:room-coroutines:$room_version",
             // "androidx.room:room-guava:$room_version",
@@ -131,11 +123,6 @@ dependencies {
             "com.facebook.android:facebook-login:$facebook_version"
     )
 
-    // lombok
-    implementation(
-            "org.projectlombok:lombok:$lombok_version"
-    )
-
     // ------------------------------------------------------------------------------------------ UI
     implementation(
             "androidx.legacy:legacy-support-v4:$legacy_support_version",
@@ -153,8 +140,6 @@ dependencies {
     kapt("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
     kapt("androidx.room:room-compiler:$room_version")
     kapt "com.google.dagger:hilt-android-compiler:$dagger_hilt_version"
-    kapt "org.projectlombok:lombok:$lombok_version"
-
 
     // //////////////////////////////////////////////////////////////////////////////////////// TEST
     testImplementation "junit:junit:4.13.2"

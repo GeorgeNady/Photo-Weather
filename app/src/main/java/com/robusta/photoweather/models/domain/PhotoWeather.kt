@@ -3,13 +3,11 @@ package com.robusta.photoweather.models.domain
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import lombok.Builder
 import java.util.*
 
 @Entity(
     tableName = "photo_weather_table"
 )
-@Builder
 data class PhotoWeather(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int? = null,
     @ColumnInfo(name = "time") val time: Long? = Date().time,
