@@ -32,6 +32,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+
+        multiDexEnabled true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -50,6 +54,7 @@ android {
 dependencies {
 
     implementation project(path: ":base")
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aab'])
 
     // ////////////////////////////////////////////////////////////////////////////// implementation
     implementation(

@@ -66,7 +66,7 @@
 
         <provider android:authorities="com.facebook.app.FacebookContentProvider5641265922596352"
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="false" />
+            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
