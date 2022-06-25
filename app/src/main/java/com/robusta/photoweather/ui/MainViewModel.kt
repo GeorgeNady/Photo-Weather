@@ -44,15 +44,15 @@ class MainViewModel @Inject constructor(
 
     //////////////////////////////////////////////////////////////////////////////////////// NETWORK
     fun getCurrentWeather(
-        lon: Double,
         lat: Double,
+        lon: Double,
         apiKey: String,
         units: String?,
         lang: String?
     ) = viewModelScope.launch {
         _response.value = Resource.loading()
         try {
-            _response.value = mainRepo.getCurrentWeather(lon, lat, apiKey, units, lang)
+            _response.value = mainRepo.getCurrentWeather(lat, lon, apiKey, units, lang)
         } catch (e: Exception) {
             _response.value = e.localizedMessage?.let { Resource.failed(it) }
         }

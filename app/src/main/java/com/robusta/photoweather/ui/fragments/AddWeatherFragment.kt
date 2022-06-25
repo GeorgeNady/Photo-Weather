@@ -13,6 +13,7 @@ import com.facebook.CallbackManager
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareButton
+import com.facebook.share.widget.ShareDialog
 import com.robusta.base.fragments.ActivityFragmentAnnoation
 import com.robusta.base.fragments.BaseFragment
 import com.robusta.image_converter.ImageConverter.bitmapToByteArray
@@ -48,17 +49,16 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-//    private val shareDialog by lazy { ShareDialog((activity as MainActivity)) }
+    private val shareDialog by lazy { ShareDialog((activity as MainActivity)) }
 
     override fun onLocationChanged(location: Location) {
         mainViewModel.location.value = location
-        Timber.d(
-            """
+        Timber.d("""
             accuracy: ${location.accuracy}
             latitude: ${location.latitude}
             longitude: ${location.longitude}
-        """.trimIndent()
-        )
+        """)
+
     }
 
     override fun initialization() {
@@ -73,10 +73,10 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         binding?.apply {
             mainViewModel.location.observe(this@AddWeatherFragment) { location ->
                 if (!isApiCalled) {
-                    if (location.accuracy <= 50f) {
+                    if (location.accuracy <= 20f) {
                         mainViewModel.getCurrentWeather(
-                            location.longitude,
                             location.latitude,
+                            location.longitude,
                             API_KEY,
                             null,
                             null
@@ -203,7 +203,6 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         } else {
             Timber.d("Needed permissions granted")
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0f, this)
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0f, this)
         }
 
     }

@@ -10,12 +10,12 @@ class MainRepo @Inject constructor(
 ) : BaseDataSource() {
 
     suspend fun getCurrentWeather(
-        lon: Double,
         lat: Double,
+        lon: Double,
         apiKey: String,
         units: String?,
         lang: String?
-    ) = safeApiCall { api.getCurrentWeather(lon, lat, apiKey, units, lang) }
+    ) = safeApiCall { api.getCurrentWeather(lat, lon, apiKey, units, lang) }
 
     // suspend fun insertPhotoWeather(photoWeather: PhotoWeather) = dao.insertPhotoWeather(photoWeather)
 
