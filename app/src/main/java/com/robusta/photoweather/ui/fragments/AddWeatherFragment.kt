@@ -52,13 +52,13 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
     private val shareDialog by lazy { ShareDialog((activity as MainActivity)) }
 
     override fun onLocationChanged(location: Location) {
-        mainViewModel.location.value = location
-        Timber.d("""
-            accuracy: ${location.accuracy}
-            latitude: ${location.latitude}
-            longitude: ${location.longitude}
-        """)
-
+        mainViewModel.location.value = location.also {
+            Timber.d("""
+                accuracy: ${location.accuracy}
+                latitude: ${location.latitude}
+                longitude: ${location.longitude}
+            """)
+        }
     }
 
     override fun initialization() {
@@ -72,8 +72,9 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
 
         binding?.apply {
             mainViewModel.location.observe(this@AddWeatherFragment) { location ->
+
                 if (!isApiCalled) {
-                    if (location.accuracy <= 20f) {
+                    if (location.accuracy <= 50f) {
                         mainViewModel.getCurrentWeather(
                             location.latitude,
                             location.longitude,
@@ -90,7 +91,7 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
             btnShareFacebook.setOnClickListener {
                 mainViewModel.apply {
                     val thumbnailBitmap = takeViewSnapshot(cardView)
-                    saveHistoryInDatabase(thumbnailBitmap)
+                    // saveHistoryInDatabase(thumbnailBitmap)
                     (it as ShareButton).shareContent = facebookShareHandler(thumbnailBitmap)
                 }
             }
@@ -129,7 +130,8 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         }
     }
 
-    private fun FragmentAddWeatherBinding.saveHistoryInDatabase(thumbnailBitmap: Bitmap) {
+    // TODO : fix this
+    /*private fun FragmentAddWeatherBinding.saveHistoryInDatabase(thumbnailBitmap: Bitmap) {
         val imageBitmap = getBitmapFromImageVIew(ivCapturedPicture)
         val imageByteArray = bitmapToByteArray(imageBitmap)
         val thumbnailByteArray = bitmapToByteArray(thumbnailBitmap)
@@ -149,7 +151,7 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
             // createPhotoHistory(photoWeather)
         }
 
-    }
+    }*/
 
     private fun facebookShareHandler(screenShoot: Bitmap): SharePhotoContent {
         val sharePhotoContent: SharePhotoContent
@@ -171,13 +173,13 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
     }
 
     private fun FragmentAddWeatherBinding.loading() {
-        progressBar.visibility = View.VISIBLE
-        tvWeatherInfo.visibility = View.GONE
+        progressBar.show()
+        tvWeatherInfo.gone()
     }
 
     private fun FragmentAddWeatherBinding.finishLoading(message: String? = null) {
-        progressBar.visibility = View.GONE
-        tvWeatherInfo.visibility = View.VISIBLE
+        progressBar.gone()
+        tvWeatherInfo.show()
         message?.let {
             tvWeatherInfo.text = it
         }
