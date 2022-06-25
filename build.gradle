@@ -22,6 +22,8 @@ buildscript {
         coil_version = "1.4.0"
         leakcanary_version = "2.9.1"
         facebook_version = "12.3.0"
+        lombok_version = "1.18.24"
+        koin_version  = "3.2.0"
 
         libraries:
         [
@@ -60,7 +62,7 @@ buildscript {
     dependencies {
         //noinspection AndroidGradlePluginVersion
         classpath('com.android.tools.build:gradle:7.0.4')
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version")
         classpath("com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt_version")
 

@@ -2,7 +2,6 @@ package com.robusta.photoweather.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.robusta.photoweather.models.domain.PhotoWeather
 
 @Database(

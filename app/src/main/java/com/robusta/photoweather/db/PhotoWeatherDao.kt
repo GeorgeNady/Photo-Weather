@@ -13,6 +13,6 @@ interface PhotoWeatherDao {
     suspend fun deletePhotoWeather(photoWeather: PhotoWeather)
 
     @Query("SELECT * FROM photo_weather_table ORDER BY time ASC")
-    fun getPhotosWeather(): List<PhotoWeather>
+    fun getPhotosWeather(): MutableList<PhotoWeather>
 
 }

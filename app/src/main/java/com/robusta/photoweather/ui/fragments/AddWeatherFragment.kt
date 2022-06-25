@@ -2,7 +2,7 @@ package com.robusta.photoweather.ui.fragments
 
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
-import android.content.Intent
+import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -16,7 +16,10 @@ import com.facebook.share.widget.ShareButton
 import com.facebook.share.widget.ShareDialog
 import com.robusta.base.fragments.ActivityFragmentAnnoation
 import com.robusta.base.fragments.BaseFragment
+import com.robusta.image_converter.ImageConverter.bitmapToByteArray
+import com.robusta.image_converter.ImageConverter.getBitmapFromImageVIew
 import com.robusta.photoweather.databinding.FragmentAddWeatherBinding
+import com.robusta.photoweather.models.domain.PhotoWeather
 import com.robusta.photoweather.ui.MainActivity
 import com.robusta.photoweather.utilities.Constants.ADD_WEATHER_FRAG
 import com.robusta.photoweather.utilities.Constants.API_KEY
@@ -44,15 +47,17 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    private val shareDialog by lazy { ShareDialog((activity as MainActivity)) }
+//    private val shareDialog by lazy { ShareDialog((activity as MainActivity)) }
 
     override fun onLocationChanged(location: Location) {
         mainViewModel.location.value = location
-        Timber.d("""
+        Timber.d(
+            """
             accuracy: ${location.accuracy}
             latitude: ${location.latitude}
             longitude: ${location.longitude}
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     override fun initialization() {
@@ -68,12 +73,27 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
             mainViewModel.location.observe(this@AddWeatherFragment) { location ->
                 if (!isApiCalled) {
                     if (location.accuracy <= 50f) {
-                        mainViewModel.getCurrentWeather(location.longitude, location.latitude, API_KEY, null, null)
+                        mainViewModel.getCurrentWeather(
+                            location.longitude,
+                            location.latitude,
+                            API_KEY,
+                            null,
+                            null
+                        )
                         isApiCalled = true
                         Timber.d("Api was Called")
                     }
                 }
             }
+
+            btnShareFacebook.setOnClickListener {
+                mainViewModel.apply {
+                    val thumbnailBitmap = takeViewSnapshot(cardView)
+                    saveHistoryInDatabase(thumbnailBitmap)
+                    (it as ShareButton).shareContent = facebookShareHandler(thumbnailBitmap)
+                }
+            }
+
             mainViewModel.response.observe(viewLifecycleOwner) { res ->
                 res.handler(
                     mLoading = { loading() },
@@ -95,36 +115,57 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
                 }
             }
 
-            btnFacebookLoing
-
-            btnShareFacebook.setOnClickListener {
-                mainViewModel.apply {
-                    val screenShoot = requireActivity().takeViewSnapshot(cardView)
-                    val sharePhoto: SharePhoto = SharePhoto.Builder()
-                        .setBitmap(screenShoot)
-                        .build()
-                    val sharePhotoContent: SharePhotoContent = SharePhotoContent.Builder()
-                        .addPhoto(sharePhoto)
-                        .build()
-
-                    shareDialog.show(sharePhotoContent)
-                    //(it as ShareButton).shareContent = sharePhotoContent
+            mainViewModel.createHistoryPhoto.observe(viewLifecycleOwner) { res ->
+                res.handler(
+                    mLoading = { loadingLayout.show() },
+                    mError = { loadingLayout.gone(it) },
+                    mFailed = { loadingLayout.gone(it) }
+                ) {
+                    loadingLayout.gone("Photo Saved Successfully in the History")
                 }
-
             }
 
         }
+    }
+
+    private fun FragmentAddWeatherBinding.saveHistoryInDatabase(thumbnailBitmap: Bitmap) {
+        val imageBitmap = getBitmapFromImageVIew(ivCapturedPicture)
+        val imageByteArray = bitmapToByteArray(imageBitmap)
+        val thumbnailByteArray = bitmapToByteArray(thumbnailBitmap)
+        mainViewModel.apply {
+            val currentWeather = response.value?.data!!
+            val photoWeather = PhotoWeather(
+                name = currentWeather.name,
+                temp = currentWeather.main.temp,
+                feelsLike = currentWeather.main.feels_like,
+                humidity = currentWeather.main.humidity,
+                windSpeed = currentWeather.wind.speed,
+                windDeg = currentWeather.wind.deg,
+                image = imageByteArray,
+                thumbnail = thumbnailByteArray,
+            )
+            createPhotoHistory(photoWeather)
+        }
+
+    }
+
+    private fun facebookShareHandler(screenShoot: Bitmap): SharePhotoContent {
+        val sharePhotoContent: SharePhotoContent
+        mainViewModel.apply {
+            val sharePhoto: SharePhoto = SharePhoto.Builder()
+                .setBitmap(screenShoot)
+                .build()
+            sharePhotoContent = SharePhotoContent.Builder()
+                .addPhoto(sharePhoto)
+                .build()
+        }
+        return sharePhotoContent
     }
 
     override fun onPause() {
         super.onPause()
         // remove location listener
         locationManager.removeUpdates(this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
     }
 
     private fun FragmentAddWeatherBinding.loading() {

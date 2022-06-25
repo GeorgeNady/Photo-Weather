@@ -1,3 +1,4 @@
 rootProject.name = "PhotoWeather"
 include ':app'
 include ':base'
+include ':ImageConverter'

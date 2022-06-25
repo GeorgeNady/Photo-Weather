@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -65,6 +66,21 @@ abstract class BaseFragment<T : ViewDataBinding?> : Fragment() {
             popEnter = R.anim.slide_in_left
             popExit = R.anim.slide_out_right
         }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////// {Visibility} //////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    fun View.gone(text:String? = null) {
+        visibility = View.GONE
+        text?.let {
+            Toast.makeText(requireContext(), text,Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun View.show() {
+        visibility = View.VISIBLE
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
