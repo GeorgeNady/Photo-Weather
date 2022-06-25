@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("kotlin-android")
     id("kotlin-kapt")
 }
@@ -34,7 +33,6 @@ android {
 dependencies {
 
     implementation (
-            "androidx.core:core-ktx:$kotlin_version",
             "androidx.appcompat:appcompat:$appcompat_version",
             "io.insert-koin:koin-core:$koin_version" // koin
     )
