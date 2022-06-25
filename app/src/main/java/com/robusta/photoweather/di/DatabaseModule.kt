@@ -39,3 +39,24 @@ object DatabaseModule {
     ).build()
 
 }
+
+
+
+/*
+@Module
+@InstallIn(SingletonComponent::class)
+object DatabaseModule {
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): PhotoWeatherDatabase =
+        PhotoWeatherDatabase.getPhotoWeatherDatabase(context)
+
+    @Provides
+    @Singleton
+    fun providePhotoWeatherDao(db: PhotoWeatherDatabase): PhotoWeatherDao =
+        db.getPhotoWeatherDao()
+
+
+
+}*/

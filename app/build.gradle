@@ -24,9 +24,9 @@ android {
             annotationProcessorOptions {
                 arguments += [
                         "dagger.hilt.disableModulesHaveInstallInCheck": "true",
-                        "room.schemaLocation":"$projectDir/schemas".toString(),
-                        "room.incremental":"true",
-                        "room.expandProjection":"true"
+                        "room.schemaLocation"                         : "$projectDir/schemas".toString(),
+                        "room.incremental"                            : "true",
+                        "room.expandProjection"                       : "true"
                 ]
             }
         }
@@ -39,7 +39,7 @@ android {
         }
         debug {
 
-        multiDexEnabled true
+            multiDexEnabled true
         }
     }
     compileOptions {
@@ -64,6 +64,7 @@ dependencies {
 
     // ////////////////////////////////////////////////////////////////////////////// implementation
     implementation(
+            'androidx.core:core-ktx:1.7.0',
             "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
             "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     )
@@ -82,10 +83,10 @@ dependencies {
 
     // Retrofit
     implementation(
-           "com.squareup.retrofit2:retrofit:$retrofit2_version",
-           "com.squareup.retrofit2:converter-gson:$retrofit2_version",
-           "com.squareup.okhttp:okhttp:2.7.5",
-           "com.squareup.okhttp3:logging-interceptor:3.9.0"
+            "com.squareup.retrofit2:retrofit:$retrofit2_version",
+            "com.squareup.retrofit2:converter-gson:$retrofit2_version",
+            "com.squareup.okhttp:okhttp:2.7.5",
+            "com.squareup.okhttp3:logging-interceptor:3.9.0"
     )
 
     // Gson
@@ -103,6 +104,7 @@ dependencies {
     // Room
     implementation(
             "androidx.room:room-runtime:$room_version",
+            "androidx.room:room-compiler:$room_version",
             "androidx.room:room-ktx:$room_version",
             // "androidx.room:room-coroutines:$room_version",
             // "androidx.room:room-guava:$room_version",
@@ -118,8 +120,7 @@ dependencies {
     )
 
     // Activity KTX for viewModels()
-    //noinspection GradleDependency
-    implementation "androidx.activity:activity-ktx:1.1.0"
+    implementation "androidx.activity:activity-ktx:1.4.0"
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"

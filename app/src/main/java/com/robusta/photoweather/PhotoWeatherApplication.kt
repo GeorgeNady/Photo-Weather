@@ -1,6 +1,7 @@
 package com.robusta.photoweather
 
 import android.app.Application
+import androidx.databinding.ktx.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

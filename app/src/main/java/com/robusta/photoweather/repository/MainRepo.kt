@@ -20,7 +20,9 @@ class MainRepo @Inject constructor(
     ) = safeApiCall { api.getCurrentWeather(lon, lat, apiKey, units, lang) }
 
     suspend fun insertPhotoWeather(photoWeather: PhotoWeather) = dao.insertPhotoWeather(photoWeather)
+
     suspend fun deletePhotoWeather(photoWeather: PhotoWeather) = dao.deletePhotoWeather(photoWeather)
+
     fun getPhotosWeather() = dao.getPhotosWeather()
 
 }

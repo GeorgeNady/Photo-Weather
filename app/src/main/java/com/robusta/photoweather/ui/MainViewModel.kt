@@ -12,6 +12,8 @@ import com.robusta.photoweather.models.response.CurrentWeatherResponse
 import com.robusta.photoweather.repository.MainRepo
 import com.robusta.photoweather.utilities.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -63,7 +65,6 @@ class MainViewModel @Inject constructor(
             _historyPhoto.value = Resource.success(mainRepo.getPhotosWeather())
         } catch (e: Exception) {
             _historyPhoto.value = Resource.failed(e.message.toString())
-
         }
     }
 
@@ -71,13 +72,11 @@ class MainViewModel @Inject constructor(
         _createHistoryPhoto.value = Resource.loading()
         try {
             val isCreated = mainRepo.insertPhotoWeather(photoWeather)
-            isCreated?.let {
-                if (it == 1L) {
-                    _createHistoryPhoto.value = Resource.success(photoWeather)
-                    _historyPhoto.value?.data?.add(photoWeather)
-                    val newList =  _historyPhoto.value?.data!!
-                    _historyPhoto.postValue(Resource.success(newList))
-                }
+            if (isCreated == 1L) {
+                _createHistoryPhoto.value = Resource.success(photoWeather)
+                _historyPhoto.value?.data?.add(photoWeather)
+                val newList = _historyPhoto.value?.data!!
+                _historyPhoto.postValue(Resource.success(newList))
             }
         } catch (e: Exception) {
             _createHistoryPhoto.value = Resource.failed(e.message.toString())

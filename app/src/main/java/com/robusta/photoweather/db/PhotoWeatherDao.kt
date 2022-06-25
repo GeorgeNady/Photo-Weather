@@ -7,9 +7,9 @@ import com.robusta.photoweather.models.domain.PhotoWeather
 interface PhotoWeatherDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE, entity = PhotoWeather::class)
-    suspend fun insertPhotoWeather(photoWeather: PhotoWeather): Long?
+    suspend fun insertPhotoWeather(photoWeather: PhotoWeather): Long
 
-    @Delete
+    @Delete(entity = PhotoWeather::class)
     suspend fun deletePhotoWeather(photoWeather: PhotoWeather)
 
     @Query("SELECT * FROM photo_weather_table ORDER BY time ASC")
