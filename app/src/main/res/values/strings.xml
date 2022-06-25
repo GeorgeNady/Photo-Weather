@@ -6,4 +6,8 @@
     <string name="gallery">Gallery</string>
     <string name="choose_from">Choose from:</string>
     <string name="share_to">Share</string>
+
+    <string name="facebook_app_id">5641265922596352</string>
+    <string name="fb_login_protocol_scheme">fb5641265922596352</string>
+    <string name="facebook_client_token">132aeeaea870da11fa090bacdbdd0f07</string>
 </resources>

@@ -7,11 +7,8 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.Toast
-import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -54,11 +51,11 @@ abstract class BaseFragment<T : ViewDataBinding?> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewModel()
+        initialization()
         setListener()
     }
 
-    protected abstract fun initViewModel() // TODO : add viewModel declaration
+    protected abstract fun initialization() // TODO : add viewModel declaration
     protected abstract fun setListener() // TODO : Logic here
 
     val navOptions = navOptions {

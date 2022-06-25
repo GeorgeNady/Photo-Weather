@@ -1,14 +1,20 @@
 package com.robusta.photoweather.ui
 
+import android.R.attr.label
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.graphics.Bitmap
 import android.location.Location
 import android.os.Environment
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.facebook.CallbackManager
 import com.robusta.photoweather.models.response.CurrentWeatherResponse
 import com.robusta.photoweather.repository.MainRepo
 import com.robusta.photoweather.utilities.Resource
@@ -19,13 +25,13 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainRepo: MainRepo
+    private val mainRepo: MainRepo,
 ) : ViewModel() {
 
     // private
@@ -80,5 +86,16 @@ class MainViewModel @Inject constructor(
         return null
     }
 
+    fun Activity.takeViewSnapshot(view: View): Bitmap {
+        var bitmap: Bitmap? = null
+        try {
+            view.isDrawingCacheEnabled = true
+            bitmap = Bitmap.createBitmap(view.drawingCache)
+            view.isDrawingCacheEnabled = false
+        } catch (e:Exception) {
+            Timber.e(e.message)
+        }
+        return bitmap!!
+    }
 
 }

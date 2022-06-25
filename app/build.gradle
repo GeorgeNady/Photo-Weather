@@ -109,9 +109,14 @@ dependencies {
     //noinspection GradleDependency
     implementation "androidx.activity:activity-ktx:1.1.0"
 
-    //Dagger - Hilt
+    // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
 
+    // facebook
+    implementation(
+            "com.facebook.android:facebook-share:$facebook_version",
+            "com.facebook.android:facebook-login:$facebook_version"
+    )
 
     // ------------------------------------------------------------------------------------------ UI
     implementation(
@@ -119,11 +124,12 @@ dependencies {
             "com.google.android.material:material:$material_version",
             "androidx.constraintlayout:constraintlayout:$constraintlayout_version",
             "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version",
-            'com.facebook.shimmer:shimmer:0.5.0'
+            "com.facebook.shimmer:shimmer:$shimmer_version",
+            "io.coil-kt:coil:$coil_version"
     )
 
-    // Coil
-    implementation("io.coil-kt:coil:1.4.0")
+    // /////////////////////////////////////////////////////////////////// DEBUG IMPLEMENTATION ONLY
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:$leakcanary_version")
 
     // /////////////////////////////////////////////////////////////////// KOTLIN ANNOTATION PROCESS
     kapt("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")

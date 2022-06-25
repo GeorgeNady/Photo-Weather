@@ -32,13 +32,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var file: File
     private lateinit var mCurrentPhotoPath: String
 
-    override fun initViewModel() {}
+    override fun initialization() {}
 
     override fun setListener() {
         binding?.apply {
             fabAddWeatherStatus.setOnClickListener {
                 locationPermissionsRequest.launch(arrayOf(
                     ACCESS_FINE_LOCATION,
+                    ACCESS_COARSE_LOCATION,
                     READ_EXTERNAL_STORAGE,
                     WRITE_EXTERNAL_STORAGE,
                     CAMERA
