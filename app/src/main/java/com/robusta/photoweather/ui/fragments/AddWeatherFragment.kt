@@ -13,7 +13,6 @@ import com.facebook.CallbackManager
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareButton
-import com.facebook.share.widget.ShareDialog
 import com.robusta.base.fragments.ActivityFragmentAnnoation
 import com.robusta.base.fragments.BaseFragment
 import com.robusta.image_converter.ImageConverter.bitmapToByteArray
@@ -23,10 +22,12 @@ import com.robusta.photoweather.models.domain.PhotoWeather
 import com.robusta.photoweather.ui.MainActivity
 import com.robusta.photoweather.utilities.Constants.ADD_WEATHER_FRAG
 import com.robusta.photoweather.utilities.Constants.API_KEY
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 @ActivityFragmentAnnoation(ADD_WEATHER_FRAG)
 class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationListener {
 
@@ -135,6 +136,7 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         mainViewModel.apply {
             val currentWeather = response.value?.data!!
             val photoWeather = PhotoWeather(
+                time = Date().time,
                 name = currentWeather.name,
                 temp = currentWeather.main.temp,
                 feelsLike = currentWeather.main.feels_like,

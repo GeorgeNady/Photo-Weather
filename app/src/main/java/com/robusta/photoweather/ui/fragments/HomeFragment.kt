@@ -14,6 +14,7 @@ import com.robusta.photoweather.databinding.FragmentHomeBinding
 import com.robusta.photoweather.ui.dialogs.PickImageDialogFragment
 import com.robusta.photoweather.utilities.Constants.FILE_PROVIDER
 import com.robusta.photoweather.utilities.Constants.HOME_FRAG
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -21,6 +22,7 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 @ActivityFragmentAnnoation(HOME_FRAG)
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 

@@ -11,7 +11,7 @@ import java.util.*
 )
 @Builder
 data class PhotoWeather(
-    @PrimaryKey(autoGenerate = false) @ColumnInfo(name = "id") val id: Long? = null,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int? = null,
     @ColumnInfo(name = "time") val time: Long? = Date().time,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "temp") val temp: Double?,
@@ -22,6 +22,10 @@ data class PhotoWeather(
     @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB) val image: ByteArray?,
     @ColumnInfo(name = "thumbnail", typeAffinity = ColumnInfo.BLOB) val thumbnail: ByteArray?
 ) {
+
+
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

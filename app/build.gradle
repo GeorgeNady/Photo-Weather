@@ -22,7 +22,12 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += ["dagger.hilt.disableModulesHaveInstallInCheck": "true"]
+                arguments += [
+                        "dagger.hilt.disableModulesHaveInstallInCheck": "true",
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"
+                ]
             }
         }
     }
@@ -99,8 +104,9 @@ dependencies {
     implementation(
             "androidx.room:room-runtime:$room_version",
             "androidx.room:room-ktx:$room_version",
-            "androidx.room:room-guava:$room_version",
-            "androidx.room:room-paging:$room_version"
+            // "androidx.room:room-coroutines:$room_version",
+            // "androidx.room:room-guava:$room_version",
+            // "androidx.room:room-paging:$room_version"
     )
 
 

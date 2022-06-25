@@ -1,21 +1,12 @@
 package com.robusta.photoweather.ui
 
-import android.R.attr.label
-import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context.CLIPBOARD_SERVICE
 import android.graphics.Bitmap
 import android.location.Location
-import android.os.Environment
 import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.facebook.CallbackManager
 import com.robusta.photoweather.models.domain.PhotoWeather
 import com.robusta.photoweather.models.response.CurrentWeatherResponse
 import com.robusta.photoweather.repository.MainRepo
@@ -23,11 +14,6 @@ import com.robusta.photoweather.utilities.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 typealias WeatherResponseMLD = MutableLiveData<Resource<CurrentWeatherResponse>>
@@ -50,9 +36,8 @@ class MainViewModel @Inject constructor(
     private val _createHistoryPhoto = PhotoMLD()
 
     // public
-    val response : WeatherResponseLD get() = _response
-    val historyPhoto : PhotosLD get() = _historyPhoto
-    val createHistoryPhoto : PhotoLD get() = _createHistoryPhoto
+    val response: WeatherResponseLD get() = _response
+    val createHistoryPhoto: PhotoLD get() = _createHistoryPhoto
     val location = MutableLiveData<Location>()
 
     //////////////////////////////////////////////////////////////////////////////////////// NETWORK
@@ -106,7 +91,7 @@ class MainViewModel @Inject constructor(
             view.isDrawingCacheEnabled = true
             bitmap = Bitmap.createBitmap(view.drawingCache)
             view.isDrawingCacheEnabled = false
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             Timber.e(e.message)
         }
         return bitmap!!
