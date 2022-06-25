@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var dialog: PickImageDialogFragment
 
-    private lateinit var mUri : Uri
+    private lateinit var mUri: Uri
     private lateinit var file: File
     private lateinit var mCurrentPhotoPath: String
 
@@ -39,13 +38,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setListener() {
         binding?.apply {
             fabAddWeatherStatus.setOnClickListener {
-                locationPermissionsRequest.launch(arrayOf(
-                    ACCESS_FINE_LOCATION,
-                    ACCESS_COARSE_LOCATION,
-                    READ_EXTERNAL_STORAGE,
-                    WRITE_EXTERNAL_STORAGE,
-                    CAMERA
-                ))
+                locationPermissionsRequest.launch(
+                    arrayOf(
+                        ACCESS_FINE_LOCATION,
+                        ACCESS_COARSE_LOCATION,
+                        READ_EXTERNAL_STORAGE,
+                        WRITE_EXTERNAL_STORAGE,
+                        CAMERA
+                    )
+                )
             }
         }
     }
@@ -54,27 +55,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////// RESULT HANDLER
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            Timber.d("image location $mUri")
-            dialog.dismiss()
-            val bundle = Bundle().also {
-                it.putParcelable("uri", mUri)
-            }
-            findNavController().navigate(R.id.addWeatherFragment,bundle, navOptions )
+    private val getCameraImage =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                Timber.d("image location $mUri")
+                dialog.dismiss()
+                val bundle = Bundle().also {
+                    it.putParcelable("uri", mUri)
+                }
+                findNavController().navigate(R.id.addWeatherFragment, bundle, navOptions)
+            } else Timber.e("takerPicture $success")
         }
-        else Timber.e("takerPicture $success")
-    }
 
-    private val getGalleryImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { internalUri ->
-            dialog.dismiss()
-            val bundle = Bundle().also {
-                it.putParcelable("uri", internalUri)
+    private val getGalleryImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { internalUri ->
+                dialog.dismiss()
+                val bundle = Bundle().also {
+                    it.putParcelable("uri", internalUri)
+                }
+                findNavController().navigate(R.id.addWeatherFragment, bundle, navOptions)
             }
-            findNavController().navigate(R.id.addWeatherFragment,bundle, navOptions )
         }
-    }
 
     private val locationPermissionsRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()

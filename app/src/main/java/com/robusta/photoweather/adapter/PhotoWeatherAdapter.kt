@@ -3,30 +3,31 @@ package com.robusta.photoweather.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.robusta.photoweather.databinding.ItemWeatherHistoryBinding
 import com.robusta.photoweather.models.domain.PhotoWeather
 
-class PhotoWeatherAdapter: ListAdapter<PhotoWeather,PhotoWeatherAdapter.PhotoWeatherViewHolder>(Differ) {
+class PhotoWeatherAdapter :
+    ListAdapter<PhotoWeather, PhotoWeatherAdapter.PhotoWeatherViewHolder>(Differ) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // info ------------------------------------------------------------------------------ Variables
     ////////////////////////////////////////////////////////////////////////////////////////////////
     object Differ : DiffUtil.ItemCallback<PhotoWeather>() {
-        override fun areItemsTheSame(oldItem: PhotoWeather, newItem: PhotoWeather)
-        = oldItem.id == newItem.id
-        override fun areContentsTheSame(oldItem: PhotoWeather, newItem: PhotoWeather)
-        = oldItem == newItem
+        override fun areItemsTheSame(oldItem: PhotoWeather, newItem: PhotoWeather) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: PhotoWeather, newItem: PhotoWeather) =
+            oldItem == newItem
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // info ---------------------------------------------------------------------------- View Holder
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    inner class PhotoWeatherViewHolder(val binding: ItemWeatherHistoryBinding):
-            RecyclerView.ViewHolder(binding.root)
+    inner class PhotoWeatherViewHolder(val binding: ItemWeatherHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // info ----------------------------------------------------- Recycler View Members to Implement
@@ -55,7 +56,11 @@ class PhotoWeatherAdapter: ListAdapter<PhotoWeather,PhotoWeatherAdapter.PhotoWea
     }
 
     //Y//////////////////////////////////////////////////////////////////////////////////// Listener
-    private fun ItemWeatherHistoryBinding.setListener(photoWeather: PhotoWeather, position: Int,holder: PhotoWeatherViewHolder) {
+    private fun ItemWeatherHistoryBinding.setListener(
+        photoWeather: PhotoWeather,
+        position: Int,
+        holder: PhotoWeatherViewHolder
+    ) {
 
     }
 

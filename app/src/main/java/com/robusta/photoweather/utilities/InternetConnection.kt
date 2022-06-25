@@ -11,7 +11,8 @@ object InternetConnection {
 
     fun hasInternetConnection(): Boolean {
 
-        val connectivityManager = mApplication.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            mApplication.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val activeNetwork = connectivityManager.activeNetwork

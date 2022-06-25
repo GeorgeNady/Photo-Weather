@@ -21,8 +21,27 @@ data class PhotoWeather(
     @ColumnInfo(name = "thumbnail", typeAffinity = ColumnInfo.BLOB) val thumbnail: ByteArray?
 ) {
 
-
-
+    constructor(
+        name: String?,
+        temp: Double?,
+        feelsLike: Double?,
+        humidity: Int?,
+        windSpeed: Double?,
+        windDeg: Int?,
+        image: ByteArray?,
+        thumbnail: ByteArray?
+    ) : this(
+        null,
+        Date().time,
+        name,
+        temp,
+        feelsLike,
+        humidity,
+        windSpeed,
+        windDeg,
+        image,
+        thumbnail
+    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

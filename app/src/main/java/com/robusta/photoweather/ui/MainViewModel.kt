@@ -12,8 +12,6 @@ import com.robusta.photoweather.models.response.CurrentWeatherResponse
 import com.robusta.photoweather.repository.MainRepo
 import com.robusta.photoweather.utilities.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

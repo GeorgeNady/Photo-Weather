@@ -6,26 +6,20 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.navArgs
 import com.facebook.CallbackManager
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareButton
-import com.facebook.share.widget.ShareDialog
 import com.robusta.base.fragments.ActivityFragmentAnnoation
 import com.robusta.base.fragments.BaseFragment
-import com.robusta.image_converter.ImageConverter.bitmapToByteArray
-import com.robusta.image_converter.ImageConverter.getBitmapFromImageVIew
 import com.robusta.photoweather.databinding.FragmentAddWeatherBinding
-import com.robusta.photoweather.models.domain.PhotoWeather
 import com.robusta.photoweather.ui.MainActivity
 import com.robusta.photoweather.utilities.Constants.ADD_WEATHER_FRAG
 import com.robusta.photoweather.utilities.Constants.API_KEY
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -48,8 +42,6 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-
-    private val shareDialog by lazy { ShareDialog((activity as MainActivity)) }
 
     override fun onLocationChanged(location: Location) {
         mainViewModel.location.value = location.also {
