@@ -137,7 +137,7 @@ dependencies {
     )
 
     // /////////////////////////////////////////////////////////////////// DEBUG IMPLEMENTATION ONLY
-    // debugImplementation("com.squareup.leakcanary:leakcanary-android:$leakcanary_version")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:$leakcanary_version")
 
     // /////////////////////////////////////////////////////////////////// KOTLIN ANNOTATION PROCESS
     kapt("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
