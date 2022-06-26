@@ -17,23 +17,27 @@
             android:id="@+id/rvWeatherHistory"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:orientation="vertical"
             android:paddingTop="32dp"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_weather_history"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            tools:itemCount="2"
+            tools:listitem="@layout/item_weather_history" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddWeatherStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="32dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_baseline_camera_24"
-            android:layout_margin="32dp"
+            android:tooltipText="@string/take_new_photo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:targetApi="o" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

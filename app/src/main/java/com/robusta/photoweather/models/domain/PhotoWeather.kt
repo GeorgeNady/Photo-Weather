@@ -1,6 +1,7 @@
 package com.robusta.photoweather.models.domain
 
 import androidx.room.ColumnInfo
+import androidx.room.ColumnInfo.BLOB
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
@@ -9,7 +10,7 @@ import java.util.*
     tableName = "photo_weather_table"
 )
 data class PhotoWeather(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int? = null,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id",) val id: Int? = 0,
     @ColumnInfo(name = "time") val time: Long? = Date().time,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "temp") val temp: Double?,
@@ -17,8 +18,8 @@ data class PhotoWeather(
     @ColumnInfo(name = "humidity") val humidity: Int?,
     @ColumnInfo(name = "wind_speed") val windSpeed: Double?,
     @ColumnInfo(name = "wind_deg") val windDeg: Int?,
-    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB) val image: ByteArray?,
-    @ColumnInfo(name = "thumbnail", typeAffinity = ColumnInfo.BLOB) val thumbnail: ByteArray?
+    @ColumnInfo(name = "image", typeAffinity = BLOB) val image: ByteArray?,
+    @ColumnInfo(name = "thumbnail", typeAffinity = BLOB) val thumbnail: ByteArray?
 ) {
 
     constructor(
@@ -73,6 +74,19 @@ data class PhotoWeather(
         result = 31 * result + (windDeg ?: 0)
         result = 31 * result + (image?.contentHashCode() ?: 0)
         return result
+    }
+
+    override fun toString(): String {
+        return """
+            name: $name
+            temp: $temp
+            feelsLike: $feelsLike
+            humidity: $humidity
+            windSpeed: $windSpeed
+            windDeg: $windDeg
+            image: $image
+            thumbnail: $thumbnail
+        """.trimIndent()
     }
 
 }

@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.navArgs
 import com.facebook.CallbackManager
@@ -14,7 +16,10 @@ import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareButton
 import com.robusta.base.fragments.ActivityFragmentAnnoation
 import com.robusta.base.fragments.BaseFragment
+import com.robusta.image_converter.ImageConverter.bitmapToByteArray
+import com.robusta.image_converter.ImageConverter.getBitmapFromImageVIew
 import com.robusta.photoweather.databinding.FragmentAddWeatherBinding
+import com.robusta.photoweather.models.domain.PhotoWeather
 import com.robusta.photoweather.ui.MainActivity
 import com.robusta.photoweather.utilities.Constants.ADD_WEATHER_FRAG
 import com.robusta.photoweather.utilities.Constants.API_KEY
@@ -45,11 +50,13 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
 
     override fun onLocationChanged(location: Location) {
         mainViewModel.location.value = location.also {
-            Timber.d("""
+            Timber.d(
+                """
                 accuracy: ${location.accuracy}
                 latitude: ${location.latitude}
                 longitude: ${location.longitude}
-            """)
+            """
+            )
         }
     }
 
@@ -83,7 +90,7 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
             btnShareFacebook.setOnClickListener {
                 mainViewModel.apply {
                     val thumbnailBitmap = takeViewSnapshot(cardView)
-                    // saveHistoryInDatabase(thumbnailBitmap)
+                    Timber.d("btnShareFacebook >>> takeViewSnapshot from card view ${thumbnailBitmap.byteCount}")
                     (it as ShareButton).shareContent = facebookShareHandler(thumbnailBitmap)
                 }
             }
@@ -106,6 +113,36 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
                         Wind Speed: ${it.wind.speed}
                         Wind Degree: ${it.wind.deg}
                     """.trimIndent()
+
+                    // TODO: Save record into a database
+
+                    // Image
+                    val imageBitmap = getBitmapFromImageVIew(ivCapturedPicture)
+                    val imageByteArray = bitmapToByteArray(imageBitmap)
+                    Log.d(TAG, "setListener: imageByteArray: $imageByteArray")
+
+                    // thumbnail
+                    val thumbnailBitmap = mainViewModel.takeViewSnapshot(cardView)
+                    val thumbnailByteArray = bitmapToByteArray(thumbnailBitmap)
+                    Log.d(TAG, "setListener: thumbnailByteArray: $thumbnailByteArray")
+
+                    // create entity object
+                    val photoWeather = PhotoWeather(
+                        name = it.name,
+                        temp = it.main.temp,
+                        feelsLike = it.main.feels_like,
+                        humidity = it.main.humidity,
+                        windSpeed = it.wind.speed,
+                        windDeg = it.wind.deg,
+                        image = imageByteArray,
+                        thumbnail = thumbnailByteArray,
+                    )
+
+                    // save to the database
+                    Toast.makeText(requireContext(), photoWeather.toString(), Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "setListener: ${photoWeather.toString()}")
+                   // mainViewModel.createPhotoHistory(photoWeather)
+
                 }
             }
 
@@ -128,19 +165,7 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         val imageByteArray = bitmapToByteArray(imageBitmap)
         val thumbnailByteArray = bitmapToByteArray(thumbnailBitmap)
         mainViewModel.apply {
-            val currentWeather = response.value?.data!!
-            val photoWeather = PhotoWeather(
-                time = Date().time,
-                name = currentWeather.name,
-                temp = currentWeather.main.temp,
-                feelsLike = currentWeather.main.feels_like,
-                humidity = currentWeather.main.humidity,
-                windSpeed = currentWeather.wind.speed,
-                windDeg = currentWeather.wind.deg,
-                image = imageByteArray,
-                thumbnail = thumbnailByteArray,
-            )
-            // createPhotoHistory(photoWeather)
+            val currentWeather = response.value?.data
         }
 
     }*/
@@ -196,7 +221,8 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
             Timber.d("result contains false")
         } else {
             Timber.d("Needed permissions granted")
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0f, this)
+            // locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0f, this)
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0f, this)
         }
 
     }

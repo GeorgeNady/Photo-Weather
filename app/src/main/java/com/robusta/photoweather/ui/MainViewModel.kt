@@ -12,6 +12,7 @@ import com.robusta.photoweather.models.response.CurrentWeatherResponse
 import com.robusta.photoweather.repository.MainRepo
 import com.robusta.photoweather.utilities.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,18 +28,19 @@ typealias PhotoLD = LiveData<Resource<PhotoWeather>>
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainRepo: MainRepo,
+    private val mainRepo: MainRepo
 ) : ViewModel() {
 
     // private
     private val _response = WeatherResponseMLD()
-    private val _historyPhoto = PhotosMLD()
     private val _createHistoryPhoto = PhotoMLD()
 
     // public
-    val response: WeatherResponseLD get() = _response
-    val createHistoryPhoto: PhotoLD get() = _createHistoryPhoto
     val location = MutableLiveData<Location>()
+    val response: WeatherResponseLD get() = _response
+
+    val createHistoryPhoto: PhotoLD get() = _createHistoryPhoto
+    val historyPhoto = PhotosMLD()
 
     //////////////////////////////////////////////////////////////////////////////////////// NETWORK
     fun getCurrentWeather(
@@ -57,29 +59,34 @@ class MainViewModel @Inject constructor(
     }
 
     /////////////////////////////////////////////////////////////////////////////////////// DATABASE
-    /*fun getAllHistory() {
-        _historyPhoto.value = Resource.loading()
+    fun getAllHistory() {
+        historyPhoto.postValue(Resource.loading())
+        Timber.d("getAllHistory() >>> loading fetching history from the database....")
+        val photoWeatherHistoryLivedata = mainRepo.getPhotosWeather()
         try {
-            _historyPhoto.value = Resource.success(mainRepo.getPhotosWeather())
-        } catch (e: Exception) {
-            _historyPhoto.value = Resource.failed(e.message.toString())
-        }
-    }*/
+            photoWeatherHistoryLivedata.value?.let {
+                Timber.d("getAllHistory() >>> trying to fetch history from the database")
+                historyPhoto.postValue(Resource.success(it.toMutableList()))
+            } ?: Timber.d("getAllHistory() >>> photoWeatherHistoryLivedata == null")
 
-    /*fun createPhotoHistory(photoWeather: PhotoWeather) = viewModelScope.launch {
-        _createHistoryPhoto.value = Resource.loading()
+        } catch (e:Exception) {
+            Timber.d("getAllHistory() >>> failed to fetch history from the database with 'Exception::${e.message}'")
+            historyPhoto.postValue(Resource.failed(e.stackTraceToString()))
+        }
+    }
+
+    fun createPhotoHistory(photoWeather: PhotoWeather) = viewModelScope.launch(Dispatchers.IO) {
+        _createHistoryPhoto.postValue(Resource.loading())
+        Timber.d("createPhotoHistory() >> loading")
         try {
             val isCreated = mainRepo.insertPhotoWeather(photoWeather)
-            if (isCreated == 1L) {
-                _createHistoryPhoto.value = Resource.success(photoWeather)
-                _historyPhoto.value?.data?.add(photoWeather)
-                val newList = _historyPhoto.value?.data!!
-                _historyPhoto.postValue(Resource.success(newList))
-            }
+            Timber.d("createPhotoHistory() >> isCreated: $isCreated")
+            _createHistoryPhoto.postValue(Resource.success(photoWeather))
         } catch (e: Exception) {
-            _createHistoryPhoto.value = Resource.failed(e.message.toString())
+            _createHistoryPhoto.postValue(Resource.failed(e.message.toString()))
+            Timber.e(e.message)
         }
-    }*/
+    }
 
     /////////////////////////////////////////////////////////////////////////////// HELPER FUNCTIONS
     fun takeViewSnapshot(view: View): Bitmap {

@@ -9,7 +9,6 @@ import org.koin.dsl.module
 
 internal val imageConverterModule = module {
 
-    // single instance of HelloRepository
     singleOf(::ImageConverterServiceImpl) { bind<ImageConverterRepo>() }
 
 }

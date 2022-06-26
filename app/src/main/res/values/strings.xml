@@ -11,4 +11,5 @@
     <string name="fb_login_protocol_scheme">fb5641265922596352</string>
     <string name="facebook_client_token">132aeeaea870da11fa090bacdbdd0f07</string>
     <string name="preview">Preview</string>
+    <string name="take_new_photo">Take a new photo</string>
 </resources>

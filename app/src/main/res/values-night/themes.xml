@@ -34,5 +34,14 @@
         <item name="android:paddingVertical">15dp</item>
     </style>
 
+    <!-- *************************************************************** Floating Action Button  -->
+    <dimen name="corner">16dp</dimen>
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner</item>
+    </style>
 
 </resources>

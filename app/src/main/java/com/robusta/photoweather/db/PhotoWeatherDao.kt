@@ -1,5 +1,6 @@
 package com.robusta.photoweather.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.robusta.photoweather.models.domain.PhotoWeather
 
@@ -13,5 +14,5 @@ interface PhotoWeatherDao {
     suspend fun deletePhotoWeather(photoWeather: PhotoWeather)
 
     @Query("SELECT * FROM photo_weather_table ORDER BY time ASC")
-    fun getPhotosWeather(): List<PhotoWeather>
+    fun getPhotosWeather(): LiveData<List<PhotoWeather>>
 }

@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.robusta.base.fragments.ActivityFragmentAnnoation
 import com.robusta.base.fragments.BaseFragment
 import com.robusta.photoweather.R
+import com.robusta.photoweather.adapter.PhotoWeatherAdapter
 import com.robusta.photoweather.databinding.FragmentHomeBinding
+import com.robusta.photoweather.ui.MainActivity
 import com.robusta.photoweather.ui.dialogs.PickImageDialogFragment
 import com.robusta.photoweather.utilities.Constants.FILE_PROVIDER
 import com.robusta.photoweather.utilities.Constants.HOME_FRAG
@@ -26,6 +28,8 @@ import java.util.*
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override val TAG: String get() = this::class.java.simpleName
+    private val mainViewModel by lazy { (activity as MainActivity).mainViewModel }
+    private val rvAdapter by lazy { PhotoWeatherAdapter() }
 
     private lateinit var dialog: PickImageDialogFragment
 
@@ -37,6 +41,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun setListener() {
         binding?.apply {
+            rvWeatherHistory.adapter = rvAdapter
+
             fabAddWeatherStatus.setOnClickListener {
                 locationPermissionsRequest.launch(
                     arrayOf(
@@ -48,7 +54,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     )
                 )
             }
+
+            mainViewModel.historyPhoto.observe(viewLifecycleOwner) { dbRes ->
+                dbRes.handler{
+                    Timber.d("historyPhoto >>> Success: database count: ${dbRes.data?.size ?: 0}")
+                    rvAdapter.submitList(it)
+                }
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.getAllHistory()
     }
 
 
@@ -132,5 +150,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             mCurrentPhotoPath = it.absolutePath
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////// RECYCLER VIEW
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
