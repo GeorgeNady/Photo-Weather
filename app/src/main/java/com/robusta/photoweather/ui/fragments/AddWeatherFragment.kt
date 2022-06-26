@@ -67,8 +67,6 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
     }
 
     override fun setListener() {
-        locationPermissionsRequest.launch(requiredPermissions)
-
         binding?.apply {
             mainViewModel.location.observe(this@AddWeatherFragment) { location ->
 
@@ -159,16 +157,16 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
         }
     }
 
-    // TODO : fix this
-    /*private fun FragmentAddWeatherBinding.saveHistoryInDatabase(thumbnailBitmap: Bitmap) {
-        val imageBitmap = getBitmapFromImageVIew(ivCapturedPicture)
-        val imageByteArray = bitmapToByteArray(imageBitmap)
-        val thumbnailByteArray = bitmapToByteArray(thumbnailBitmap)
-        mainViewModel.apply {
-            val currentWeather = response.value?.data
-        }
+    override fun onResume() {
+        super.onResume()
+        locationPermissionsRequest.launch(requiredPermissions)
+    }
 
-    }*/
+    override fun onPause() {
+        super.onPause()
+        // remove location listener
+        locationManager.removeUpdates(this)
+    }
 
     private fun facebookShareHandler(screenShoot: Bitmap): SharePhotoContent {
         val sharePhotoContent: SharePhotoContent
@@ -181,12 +179,6 @@ class AddWeatherFragment : BaseFragment<FragmentAddWeatherBinding>(), LocationLi
                 .build()
         }
         return sharePhotoContent
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // remove location listener
-        locationManager.removeUpdates(this)
     }
 
     private fun FragmentAddWeatherBinding.loading() {

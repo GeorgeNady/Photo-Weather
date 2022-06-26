@@ -7,7 +7,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
-internal val imageConverterModule = module {
+public val imageConverterModule = module {
 
     singleOf(::ImageConverterServiceImpl) { bind<ImageConverterRepo>() }
 

@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.robusta.image_converter.ImageConverter
 import com.robusta.photoweather.databinding.ItemWeatherHistoryBinding
 import com.robusta.photoweather.models.domain.PhotoWeather
 
@@ -45,14 +47,8 @@ class PhotoWeatherAdapter :
     override fun onBindViewHolder(holder: PhotoWeatherViewHolder, position: Int) {
         val item = getItem(position)
         holder.binding.apply {
-            initialization(item)
             setListener(item, position, holder)
         }
-    }
-
-    //Y//////////////////////////////////////////////////////////////////////////////////////// init
-    private fun ItemWeatherHistoryBinding.initialization(item: PhotoWeather) {
-
     }
 
     //Y//////////////////////////////////////////////////////////////////////////////////// Listener
@@ -62,10 +58,27 @@ class PhotoWeatherAdapter :
         holder: PhotoWeatherViewHolder
     ) {
 
+        // TODO:
+        // ivCapturedPicture.load(ImageConverter.byteArrayToBitmap(photoWeather.image!!))
+
+
+        bWeatherInfo = """
+                        City Name: ${photoWeather.name}
+                        Temperature: ${photoWeather.temp}
+                        Feel like: ${photoWeather.feelsLike}
+                        Humidity: ${photoWeather.humidity}
+                        Wind Speed: ${photoWeather.windSpeed}
+                        Wind Degree: ${photoWeather.windDeg}
+                    """.trimIndent()
+
+        container.setOnClickListener { view ->
+            onclickListener?.let { it(photoWeather, position, view, holder) }
+        }
+
     }
 
     //Y///////////////////////////////////////////////////////////////////////////// Click Interface
-    private lateinit var onclickListener: (PhotoWeather, Int, View, PhotoWeatherViewHolder) -> Unit
+    private var onclickListener: ((PhotoWeather, Int, View, PhotoWeatherViewHolder) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (PhotoWeather, Int, View, PhotoWeatherViewHolder) -> Unit) {
         onclickListener = listener

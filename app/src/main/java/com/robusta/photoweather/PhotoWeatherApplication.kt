@@ -15,6 +15,7 @@ class PhotoWeatherApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         mApplication = this
+//         GlobalContext.startKoin { modules(imageConverterModule) }
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

@@ -114,6 +114,12 @@ dependencies {
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
 
+    // Koin
+    implementation(
+            "androidx.appcompat:appcompat:$appcompat_version",
+            "io.insert-koin:koin-core:$koin_version" // koin
+    )
+
     // facebook
     implementation(
             "com.facebook.android:facebook-share:$facebook_version",

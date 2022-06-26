@@ -4,6 +4,8 @@ import android.Manifest.permission.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,8 @@ import com.robusta.base.fragments.BaseFragment
 import com.robusta.photoweather.R
 import com.robusta.photoweather.adapter.PhotoWeatherAdapter
 import com.robusta.photoweather.databinding.FragmentHomeBinding
+import com.robusta.photoweather.db.FakeRepository
+import com.robusta.photoweather.models.domain.PhotoWeather
 import com.robusta.photoweather.ui.MainActivity
 import com.robusta.photoweather.ui.dialogs.PickImageDialogFragment
 import com.robusta.photoweather.utilities.Constants.FILE_PROVIDER
@@ -42,6 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setListener() {
         binding?.apply {
             rvWeatherHistory.adapter = rvAdapter
+            rvAdapter.submitList(FakeRepository.fakeHistoryPhotos())
 
             fabAddWeatherStatus.setOnClickListener {
                 locationPermissionsRequest.launch(
@@ -60,6 +65,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     Timber.d("historyPhoto >>> Success: database count: ${dbRes.data?.size ?: 0}")
                     rvAdapter.submitList(it)
                 }
+            }
+
+            rvAdapter.setOnItemClickListener {photoWeather, i, view, holder ->
+                Timber.d(i.toString())
+                Timber.d(photoWeather.toString())
+                Timber.d(view.id.toString())
+                Timber.d(holder.hashCode().toString())
+                Toast.makeText(requireContext(), "${photoWeather.name}", Toast.LENGTH_SHORT).show()
             }
         }
     }
